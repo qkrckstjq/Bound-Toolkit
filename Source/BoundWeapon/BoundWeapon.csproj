@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>BoundWeapon</AssemblyName>
+    <RootNamespace>BoundWeapon</RootNamespace>
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4633" PrivateAssets="all" />
+    <PackageReference Include="Lib.Harmony" Version="2.2.2" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <BW_BindWeapon>지정 무기로 설정: {0}</BW_BindWeapon>
+  <BW_BindWeaponDesc>지정 무기 설정: {0} → {1}</BW_BindWeaponDesc>
+  <BW_ClearWeapon>지정 무기 해제</BW_ClearWeapon>
+  <BW_ClearWeaponDesc>지정 무기 해제: {0}</BW_ClearWeaponDesc>
+  <BW_DesignateCurrent>현재 무기를 지정</BW_DesignateCurrent>
+</LanguageData>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <BW_BindWeapon>Set as designated weapon: {0}</BW_BindWeapon>
+  <BW_BindWeaponDesc>Designated weapon set: {0} -> {1}</BW_BindWeaponDesc>
+  <BW_ClearWeapon>Clear designated weapon</BW_ClearWeapon>
+  <BW_ClearWeaponDesc>Designated weapon cleared: {0}</BW_ClearWeaponDesc>
+  <BW_DesignateCurrent>Designate current weapon</BW_DesignateCurrent>
+</LanguageData>

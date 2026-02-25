@@ -1,0 +1,49 @@
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
+using RimWorld;
+using Verse;
+
+namespace BoundWeapon
+{
+    [HarmonyPatch(typeof(Pawn), "GetGizmos")]
+    public static class Patch_Gizmos_Pawn
+    {
+        public static void Postfix(Pawn __instance, ref IEnumerable<Gizmo> __result)
+        {
+            if (__instance == null || __instance.Faction != Faction.OfPlayer)
+                return;
+
+            var list = __result.ToList();
+
+            if (__instance.equipment?.Primary != null && BoundWeaponUtil.IsValidWeapon(__instance.equipment.Primary))
+            {
+                list.Add(new Command_Action
+                {
+                    defaultLabel = "BW_DesignateCurrent".Translate(),
+                    action = () =>
+                    {
+                        var w = __instance.equipment.Primary;
+                        WorldComp_BoundWeapon.Instance.Set(__instance, w);
+                        Messages.Message("BW_BindWeaponDesc".Translate(__instance.LabelShortCap, w.LabelCap), MessageTypeDefOf.PositiveEvent, false);
+                    }
+                });
+            }
+
+            if (WorldComp_BoundWeapon.Instance.TryGet(__instance, out var bound) && bound != null)
+            {
+                list.Add(new Command_Action
+                {
+                    defaultLabel = "BW_ClearWeapon".Translate(),
+                    action = () =>
+                    {
+                        WorldComp_BoundWeapon.Instance.Clear(__instance);
+                        Messages.Message("BW_ClearWeaponDesc".Translate(__instance.LabelShortCap), MessageTypeDefOf.PositiveEvent, false);
+                    }
+                });
+            }
+
+            __result = list;
+        }
+    }
+}
