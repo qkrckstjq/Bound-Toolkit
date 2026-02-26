@@ -15,6 +15,7 @@ C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Releas
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.AssemblyInfoInputs.cache
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.AssemblyInfo.cs
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.csproj.CoreCompileInputs.cache
+C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.sourcelink.json
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWea.02052B73.Up2Date
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.dll
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.pdb
