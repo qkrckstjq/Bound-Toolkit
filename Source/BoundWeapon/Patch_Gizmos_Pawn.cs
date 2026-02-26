@@ -21,6 +21,7 @@ namespace BoundWeapon
                 list.Add(new Command_Action
                 {
                     defaultLabel = "BW_DesignateCurrent".Translate(),
+                    icon = BW_Icons.Bind,
                     action = () =>
                     {
                         var w = __instance.equipment.Primary;
@@ -35,6 +36,7 @@ namespace BoundWeapon
                 list.Add(new Command_Action
                 {
                     defaultLabel = "BW_ClearWeapon".Translate(),
+                    icon = BW_Icons.Clear,
                     action = () =>
                     {
                         WorldComp_BoundWeapon.Instance.Clear(__instance);

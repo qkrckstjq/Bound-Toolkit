@@ -20,6 +20,7 @@ namespace BoundWeapon
             yield return new Command_Action
             {
                 defaultLabel = "BoundWeapon 관리",
+                icon = BW_Icons.Manager,
                 action = () => Find.WindowStack.Add(new Window_BoundWeaponManager(__instance.Map))
             };
         }
