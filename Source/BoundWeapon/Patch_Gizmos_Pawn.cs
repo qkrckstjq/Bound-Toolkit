@@ -16,20 +16,20 @@ namespace BoundWeapon
 
             var list = __result.ToList();
 
-            if (__instance.equipment?.Primary != null && BoundWeaponUtil.IsValidWeapon(__instance.equipment.Primary))
-            {
-                list.Add(new Command_Action
-                {
-                    defaultLabel = "BW_DesignateCurrent".Translate(),
-                    icon = BW_Icons.Bind,
-                    action = () =>
-                    {
-                        var w = __instance.equipment.Primary;
-                        WorldComp_BoundWeapon.Instance.Set(__instance, w);
-                        Messages.Message("BW_BindWeaponDesc".Translate(__instance.LabelShortCap, w.LabelCap), MessageTypeDefOf.PositiveEvent, false);
-                    }
-                });
-            }
+            //if (__instance.equipment?.Primary != null && BoundWeaponUtil.IsValidWeapon(__instance.equipment.Primary))
+            //{
+            //    list.Add(new Command_Action
+            //    {
+            //        defaultLabel = "BW_DesignateCurrent".Translate(),
+            //        icon = BW_Icons.Bind,
+            //        action = () =>
+            //        {
+            //            var w = __instance.equipment.Primary;
+            //            WorldComp_BoundWeapon.Instance.Set(__instance, w);
+            //            Messages.Message("BW_BindWeaponDesc".Translate(__instance.LabelShortCap, w.LabelCap), MessageTypeDefOf.PositiveEvent, false);
+            //        }
+            //    });
+            //}
 
             if (WorldComp_BoundWeapon.Instance.TryGet(__instance, out var bound) && bound != null)
             {
