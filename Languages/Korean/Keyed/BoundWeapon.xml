@@ -6,4 +6,15 @@
   <BW_ClearWeaponDesc>지정 무기 해제: {0}</BW_ClearWeaponDesc>
   <BW_DesignateCurrent>현재 무기를 지정</BW_DesignateCurrent>
   <BW_WeaponManagement>무기 관리</BW_WeaponManagement>
+  <BW_DesignatedWeaponSetMsg>{0} 지정 무기: {1}</BW_DesignatedWeaponSetMsg>
+
+  <BW_ManagerWindowTitle>BoundWeapon 무기 지정 관리</BW_ManagerWindowTitle>
+  <BW_NoMap>맵이 없습니다.</BW_NoMap>
+  <BW_None>없음</BW_None>
+  <BW_BoundLabel>지정: {0}</BW_BoundLabel>
+  <BW_BindButton>무기 지정</BW_BindButton>
+  <BW_ClearButton>지정 해제</BW_ClearButton>
+  <BW_NoStoredWeapons>저장구역에서 무기를 찾지 못했습니다.</BW_NoStoredWeapons>
+  <BW_DesignatedWeaponClearedMsg>{0} 지정 무기 해제</BW_DesignatedWeaponClearedMsg>
+  <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
 </LanguageData>

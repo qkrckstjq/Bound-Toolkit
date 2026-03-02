@@ -14,8 +14,9 @@ namespace BoundWeapon
             foreach (var g in __result) yield return g;
 
             if (__instance == null) yield break;
-            if (__instance.Faction != Faction.OfPlayer) yield break;
             if (__instance.Map == null) yield break;
+            if (!__instance.RaceProps.Humanlike) yield break;    //µ¿¹°,¸ÞÄ«Á¦¿Ü
+            if (!__instance.IsColonist) yield break;             //Á¤Âø¹Î¸¸
 
             yield return new Command_Action
             {

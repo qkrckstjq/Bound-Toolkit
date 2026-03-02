@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <!-- Existing keys you already use -->
   <BW_BindWeapon>Set as designated weapon: {0}</BW_BindWeapon>
-  <BW_BindWeaponDesc>Designated weapon set: {0} -> {1}</BW_BindWeaponDesc>
+  <BW_BindWeaponDesc>Designated weapon set: {0} → {1}</BW_BindWeaponDesc>
   <BW_ClearWeapon>Clear designated weapon</BW_ClearWeapon>
   <BW_ClearWeaponDesc>Designated weapon cleared: {0}</BW_ClearWeaponDesc>
   <BW_DesignateCurrent>Designate current weapon</BW_DesignateCurrent>
-  <BW_WeaponManagement>Weapon Management</BW_WeaponManagement>
+  <BW_WeaponManagement>Weapon management</BW_WeaponManagement>
+  <BW_DesignatedWeaponSetMsg>{0} designated weapon: {1}</BW_DesignatedWeaponSetMsg>
+
+  <!-- Manager UI keys -->
+  <BW_ManagerWindowTitle>BoundWeapon Weapon Assignment</BW_ManagerWindowTitle>
+  <BW_NoMap>No map available.</BW_NoMap>
+  <BW_None>None</BW_None>
+  <BW_BoundLabel>Assigned: {0}</BW_BoundLabel>
+  <BW_BindButton>Assign</BW_BindButton>
+  <BW_ClearButton>Clear</BW_ClearButton>
+  <BW_NoStoredWeapons>No weapons found in storage.</BW_NoStoredWeapons>
+  <BW_DesignatedWeaponClearedMsg>{0} cleared designated weapon</BW_DesignatedWeaponClearedMsg>
+  <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
 </LanguageData>

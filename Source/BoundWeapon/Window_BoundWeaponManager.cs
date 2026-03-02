@@ -36,12 +36,12 @@ namespace BoundWeapon
         public override void DoWindowContents(Rect inRect)
         {
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(0f, 0f, inRect.width, 34f), "BoundWeapon 무기 지정 관리");
+            Widgets.Label(new Rect(0f, 0f, inRect.width, 34f), "BW_ManagerWindowTitle".Translate().ToString());
             Text.Font = GameFont.Small;
 
             if (map == null)
             {
-                Widgets.Label(new Rect(0f, 44f, inRect.width, 24f), "맵이 없습니다.");
+                Widgets.Label(new Rect(0f, 44f, inRect.width, 24f), "BW_NoMap".Translate().ToString());
                 return;
             }
 
@@ -72,21 +72,23 @@ namespace BoundWeapon
             x += 230f;
 
             ThingWithComps w;
-            string bound = "없음";
+            string bound;
             if (BoundWeaponApi.TryGet(p, out w) && w != null)
                 bound = w.LabelCap;
+            else
+                bound = "BW_None".Translate().ToString();
 
-            Widgets.Label(new Rect(x, row.y, 360f, row.height), "지정: " + bound);
+            Widgets.Label(new Rect(x, row.y, 360f, row.height), "BW_BoundLabel".Translate(bound).ToString());
             x += 370f;
 
-            if (Widgets.ButtonText(new Rect(x, row.y, 130f, row.height), "무기 지정"))
+            if (Widgets.ButtonText(new Rect(x, row.y, 130f, row.height), "BW_BindButton".Translate().ToString()))
                 OpenWeaponSelectMenu(p);
             x += 140f;
 
-            if (Widgets.ButtonText(new Rect(x, row.y, 130f, row.height), "지정 해제"))
+            if (Widgets.ButtonText(new Rect(x, row.y, 130f, row.height), "BW_ClearButton".Translate().ToString()))
             {
                 BoundWeaponApi.Clear(p);
-                Messages.Message(p.LabelShortCap + " 지정 무기 해제", MessageTypeDefOf.NeutralEvent, false);
+                Messages.Message("BW_DesignatedWeaponClearedMsg".Translate(p.LabelShortCap), MessageTypeDefOf.NeutralEvent, false);
             }
         }
 
@@ -95,7 +97,7 @@ namespace BoundWeapon
             List<ThingWithComps> weapons = GetStoredWeapons(map);
             if (weapons.Count == 0)
             {
-                Messages.Message("저장구역에서 무기를 찾지 못했습니다.", MessageTypeDefOf.RejectInput, false);
+                Messages.Message("BW_NoStoredWeapons".Translate(), MessageTypeDefOf.RejectInput, false);
                 return;
             }
 
@@ -107,12 +109,12 @@ namespace BoundWeapon
                 ThingWithComps w = weapons[i];
                 if (w == null || w.Destroyed) continue;
 
-                string label = w.LabelCap + " (" + w.HitPoints + "/" + w.MaxHitPoints + ")";
+                string label = "BW_WeaponListEntry".Translate(w.LabelCap, w.HitPoints, w.MaxHitPoints).ToString();
                 opts.Add(new FloatMenuOption(label, () =>
                 {
                     BoundWeaponApi.Set(pawn, w);
                     w.SetForbidden(false, false);
-                    Messages.Message(pawn.LabelShortCap + " 지정 무기: " + w.LabelCap, MessageTypeDefOf.PositiveEvent, false);
+                    Messages.Message("BW_DesignatedWeaponSetMsg".Translate(pawn.LabelShortCap, w.LabelCap), MessageTypeDefOf.PositiveEvent, false);
                 }));
             }
 

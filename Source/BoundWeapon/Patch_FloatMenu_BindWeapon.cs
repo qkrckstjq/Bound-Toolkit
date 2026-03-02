@@ -39,7 +39,7 @@ namespace BoundWeapon
                 if (!weapon.Spawned) continue;
                 if (weapon.Map != pawn.Map) continue;
 
-                string label = "지정 무기로 설정: " + weapon.LabelCap;
+                string label = "BW_SetDesignatedWeapon".Translate(weapon.LabelCap);
 
                 if (HasLabel(__1, label)) continue;
 
@@ -47,7 +47,8 @@ namespace BoundWeapon
                 {
                     WorldComp_BoundWeapon.Instance.Set(pawn, weapon);
                     weapon.SetForbidden(false, false);
-                    Messages.Message(pawn.LabelShortCap + " 지정 무기: " + weapon.LabelCap, MessageTypeDefOf.PositiveEvent, false);
+                    Messages.Message("BW_DesignatedWeaponSetMsg".Translate(pawn.LabelShortCap, weapon.LabelCap),
+                        MessageTypeDefOf.PositiveEvent, false);
                 }));
             }
         }

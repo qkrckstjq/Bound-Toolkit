@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BoundWeapon")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+493c2fd861ad73a99eacdce819ad181585bb788b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93dacbcafc2713176a560d00438497428ebefc56")]
 [assembly: System.Reflection.AssemblyProductAttribute("BoundWeapon")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BoundWeapon")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
