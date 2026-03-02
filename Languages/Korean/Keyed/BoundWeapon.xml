@@ -5,4 +5,5 @@
   <BW_ClearWeapon>지정 무기 해제</BW_ClearWeapon>
   <BW_ClearWeaponDesc>지정 무기 해제: {0}</BW_ClearWeaponDesc>
   <BW_DesignateCurrent>현재 무기를 지정</BW_DesignateCurrent>
+  <BW_WeaponManagement>무기 관리</BW_WeaponManagement>
 </LanguageData>

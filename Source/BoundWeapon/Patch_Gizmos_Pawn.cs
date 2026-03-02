@@ -11,8 +11,11 @@ namespace BoundWeapon
     {
         public static void Postfix(Pawn __instance, ref IEnumerable<Gizmo> __result)
         {
-            if (__instance == null || __instance.Faction != Faction.OfPlayer)
-                return;
+            if (__instance == null) return;                 
+            if (!__instance.RaceProps.Humanlike) return;    //µ¿¹°,¸ÞÄ«Á¦¿Ü
+            if (!__instance.IsColonist) return;             //Á¤Âø¹Î¸¸
+            //if (__instance == null || __instance.Faction != Faction.OfPlayer)
+            //    return;
 
             var list = __result.ToList();
 

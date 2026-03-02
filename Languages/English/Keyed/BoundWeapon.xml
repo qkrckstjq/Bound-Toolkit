@@ -5,4 +5,5 @@
   <BW_ClearWeapon>Clear designated weapon</BW_ClearWeapon>
   <BW_ClearWeaponDesc>Designated weapon cleared: {0}</BW_ClearWeaponDesc>
   <BW_DesignateCurrent>Designate current weapon</BW_DesignateCurrent>
+  <BW_WeaponManagement>Weapon Management</BW_WeaponManagement>
 </LanguageData>
