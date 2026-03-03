@@ -19,3 +19,14 @@ C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Releas
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWea.02052B73.Up2Date
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.dll
 C:\Users\qkrckstjq\Desktop\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.pdb
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Assemblies\BoundWeapon.dll
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Assemblies\BoundWeapon.pdb
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.csproj.AssemblyReference.cache
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.GeneratedMSBuildEditorConfig.editorconfig
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.AssemblyInfoInputs.cache
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.AssemblyInfo.cs
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.csproj.CoreCompileInputs.cache
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.sourcelink.json
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWea.02052B73.Up2Date
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.dll
+F:\SteamLibrary\steamapps\common\RimWorld\Mods\BoundWeapon - 복사본\Source\BoundWeapon\obj\Release\BoundWeapon.pdb
