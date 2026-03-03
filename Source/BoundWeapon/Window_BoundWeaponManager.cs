@@ -22,10 +22,10 @@ namespace BoundWeapon
         public Window_BoundWeaponManager(Map map)
         {
             this.map = map;
-            doCloseX = true;
+            do1X = true;
             draggable = true;
             absorbInputAroundWindow = true;
-            closeOnClickedOutside = false;
+            closeOnClickedOutside = true;
 
             if (isInValidStorage1 == null)
                 isInValidStorage1 = AccessTools.Method(typeof(StoreUtility), "IsInValidStorage", new Type[] { typeof(Thing) });

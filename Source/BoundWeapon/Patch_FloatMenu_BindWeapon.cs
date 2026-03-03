@@ -39,7 +39,7 @@ namespace BoundWeapon
                 if (!weapon.Spawned) continue;
                 if (weapon.Map != pawn.Map) continue;
 
-                string label = "BW_SetDesignatedWeapon".Translate(weapon.LabelCap);
+                string label = "BW_BindWeapon".Translate(weapon.LabelCap);
 
                 if (HasLabel(__1, label)) continue;
 
