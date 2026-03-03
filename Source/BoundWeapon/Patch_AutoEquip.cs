@@ -23,6 +23,10 @@ namespace BoundWeapon
             if (pawn.Downed || pawn.InMentalState)
                 return true;
 
+            if (pawn.jobs?.curJob != null && pawn.jobs.curJob.playerForced) return true;
+
+            if (pawn.Drafted) return true;
+
             if (pawn.equipment == null)
                 return true;
 

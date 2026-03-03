@@ -22,7 +22,7 @@ namespace BoundWeapon
         public Window_BoundWeaponManager(Map map)
         {
             this.map = map;
-            do1X = true;
+            doCloseX = true;
             draggable = true;
             absorbInputAroundWindow = true;
             closeOnClickedOutside = true;
