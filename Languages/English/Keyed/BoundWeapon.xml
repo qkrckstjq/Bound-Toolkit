@@ -19,4 +19,5 @@
   <BW_NoStoredWeapons>No weapons found in storage.</BW_NoStoredWeapons>
   <BW_DesignatedWeaponClearedMsg>{0} cleared designated weapon</BW_DesignatedWeaponClearedMsg>
   <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
+  <BW_WeaponAlreadyAssigned>{0} is already designated to {1}.</BW_WeaponAlreadyAssigned>
 </LanguageData>

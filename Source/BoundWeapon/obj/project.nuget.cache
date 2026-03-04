@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K8k9B2cIbdQ=",
+  "dgSpecHash": "R7fRACw9bYk=",
   "success": true,
-  "projectFilePath": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\BoundWeapon.csproj",
+  "projectFilePath": "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\BoundWeapon.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\qkrckstjq\\.nuget\\packages\\krafs.rimworld.ref\\1.6.4633\\krafs.rimworld.ref.1.6.4633.nupkg.sha512",
     "C:\\Users\\qkrckstjq\\.nuget\\packages\\lib.harmony\\2.2.2\\lib.harmony.2.2.2.nupkg.sha512"

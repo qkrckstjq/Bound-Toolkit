@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
@@ -28,6 +29,29 @@ namespace BoundWeapon
             {
                 pawnToWeapon.Remove(pawn);
                 return;
+            }
+
+            // 이미 다른 폰이 이 무기를 지정 중이면 차단
+            foreach (var kv in pawnToWeapon)
+            {
+                Pawn otherPawn = kv.Key;
+                ThingWithComps otherWeapon = kv.Value;
+
+                if (otherPawn == null || otherWeapon == null)
+                    continue;
+
+                if (otherWeapon.Destroyed || otherPawn.Dead || otherPawn.DestroyedOrNull())
+                    continue;
+
+                if (otherPawn != pawn && ReferenceEquals(otherWeapon, weapon))
+                {
+                    Messages.Message(
+                        "BW_WeaponAlreadyAssigned".Translate(weapon.LabelCap, otherPawn.LabelShortCap),
+                        MessageTypeDefOf.RejectInput,
+                        false
+                    );
+                    return;
+                }
             }
 
             pawnToWeapon[pawn] = weapon;

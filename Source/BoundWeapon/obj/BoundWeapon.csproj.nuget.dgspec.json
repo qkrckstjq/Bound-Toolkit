@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\BoundWeapon.csproj": {}
+    "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\BoundWeapon.csproj": {}
   },
   "projects": {
-    "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\BoundWeapon.csproj": {
+    "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\BoundWeapon.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\BoundWeapon.csproj",
+        "projectUniqueName": "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\BoundWeapon.csproj",
         "projectName": "BoundWeapon",
-        "projectPath": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\BoundWeapon.csproj",
+        "projectPath": "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\BoundWeapon.csproj",
         "packagesPath": "C:\\Users\\qkrckstjq\\.nuget\\packages\\",
-        "outputPath": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Mods\\BoundWeapon - 복사본\\Source\\BoundWeapon\\obj\\",
+        "outputPath": "C:\\Users\\qkrckstjq\\Desktop\\BoundWeapon_source\\Source\\BoundWeapon\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
