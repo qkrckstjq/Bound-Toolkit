@@ -45,7 +45,10 @@ namespace BoundWeapon
 
                 __1.Add(new FloatMenuOption(label, () =>
                 {
-                    WorldComp_BoundWeapon.Instance.Set(pawn, weapon);
+                    bool ok = WorldComp_BoundWeapon.Instance.Set(pawn, weapon);
+                    if (!ok)
+                        return;
+
                     weapon.SetForbidden(false, false);
                     Messages.Message("BW_DesignatedWeaponSetMsg".Translate(pawn.LabelShortCap, weapon.LabelCap),
                         MessageTypeDefOf.PositiveEvent, false);

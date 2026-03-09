@@ -27,8 +27,8 @@ namespace BoundWeapon
 
             var size = iconSize * overlayScale;
             var overlayRect = new Rect(
-                iconRect.xMax - size + 2f,
-                iconRect.yMax - size + 2f,
+                iconRect.x + (iconRect.width - size) * 0.5f,
+                iconRect.y + (iconRect.height - size) * 0.5f + 14f,
                 size,
                 size
             );

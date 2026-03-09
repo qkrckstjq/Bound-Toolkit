@@ -16,6 +16,8 @@ namespace BoundWeapon
                 return false;
             if (twc.TryGetComp<CompEquippable>() == null)
                 return false;
+            if (twc.def.stackLimit > 1)
+                return false;
             return true;
         }
 

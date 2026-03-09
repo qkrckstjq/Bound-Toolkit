@@ -112,7 +112,7 @@ namespace BoundWeapon
                 string label = "BW_WeaponListEntry".Translate(w.LabelCap, w.HitPoints, w.MaxHitPoints).ToString();
                 opts.Add(new FloatMenuOption(label, () =>
                 {
-                    BoundWeaponApi.Set(pawn, w);
+                    if (!WorldComp_BoundWeapon.Instance.Set(pawn, w)) return;
                     w.SetForbidden(false, false);
                     Messages.Message("BW_DesignatedWeaponSetMsg".Translate(pawn.LabelShortCap, w.LabelCap), MessageTypeDefOf.PositiveEvent, false);
                 }));

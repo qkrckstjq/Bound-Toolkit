@@ -24,9 +24,9 @@ namespace BoundWeapon
                 {
                     defaultLabel = "BW_ClearWeapon".Translate(),
                     icon = bound.def.uiIcon,
-                    //iconDrawColor = bound.def.uiIconColor,
                     overlayTex = BW_Icons.Clear,
-                    overlayColor = UnityEngine.Color.red,
+                    overlayColor = Color.white,
+                    overlayScale = 0.45f,
                     action = () =>
                     {
                         WorldComp_BoundWeapon.Instance.Clear(__instance);
