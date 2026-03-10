@@ -18,4 +18,6 @@
   <BW_DesignatedWeaponClearedMsg>{0} 지정 무기 해제</BW_DesignatedWeaponClearedMsg>
   <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
   <BW_WeaponAlreadyAssigned>{0}은(는) 이미 {1}에게 지정된 무기입니다.</BW_WeaponAlreadyAssigned>
+  <BW_WeaponLinkedUnknownOwner>{0}은(는) 착용 할 수 없는 결속/생체인증 무기입니다.</BW_WeaponLinkedUnknownOwner>
+  <BW_WeaponLinkedToOtherPawn>{0}은(는) 이미 {1}에게 결속/생체인증되어 있습니다.</BW_WeaponLinkedToOtherPawn>
 </LanguageData>

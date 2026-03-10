@@ -20,4 +20,6 @@
   <BW_DesignatedWeaponClearedMsg>{0} cleared designated weapon</BW_DesignatedWeaponClearedMsg>
   <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
   <BW_WeaponAlreadyAssigned>{0} is already designated to {1}.</BW_WeaponAlreadyAssigned>
+  <BW_WeaponLinkedUnknownOwner>{0} is a bonded/biocoded weapon that cannot be worn.</BW_WeaponLinkedUnknownOwner>
+  <BW_WeaponLinkedToOtherPawn>{0} is already bonded/biocoded to {1}.</BW_WeaponLinkedToOtherPawn>
 </LanguageData>
