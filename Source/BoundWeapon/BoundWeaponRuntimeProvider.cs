@@ -23,6 +23,14 @@ namespace BoundWeapon
             }
         }
 
+        public static bool SupportsOffHand
+        {
+            get
+            {
+                return DualWieldReflection.Active;
+            }
+        }
+
         public static void Reset()
         {
             resolved = false;
