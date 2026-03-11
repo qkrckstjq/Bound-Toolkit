@@ -12,24 +12,28 @@ namespace BoundWeapon
     {
         public static void Postfix(Pawn __instance, ref IEnumerable<Gizmo> __result)
         {
-            if (__instance == null) return;
-            if (!__instance.RaceProps.Humanlike) return;
-            if (!__instance.IsColonist) return;
+            if (__instance == null)
+                return;
+            if (!__instance.RaceProps.Humanlike)
+                return;
+            if (!__instance.IsColonist)
+                return;
 
-            var list = __result.ToList();
+            List<Gizmo> list = __result.ToList();
 
-            if (WorldComp_BoundWeapon.Instance.TryGet(__instance, out var bound) && bound != null)
+            ThingWithComps bound;
+            if (BoundWeaponApi.TryGetAny(__instance, out bound) && bound != null)
             {
-                var cmd = new Command_ActionWithOverlay
+                Command_ActionWithOverlay cmd = new Command_ActionWithOverlay
                 {
                     defaultLabel = "BW_ClearWeapon".Translate(),
                     icon = bound.def.uiIcon,
                     overlayTex = BW_Icons.Clear,
                     overlayColor = Color.white,
                     overlayScale = 0.45f,
-                    action = () =>
+                    action = delegate
                     {
-                        WorldComp_BoundWeapon.Instance.Clear(__instance);
+                        BoundWeaponApi.ClearAll(__instance);
                         Messages.Message("BW_ClearWeaponDesc".Translate(__instance.LabelShortCap), MessageTypeDefOf.PositiveEvent, false);
                     }
                 };

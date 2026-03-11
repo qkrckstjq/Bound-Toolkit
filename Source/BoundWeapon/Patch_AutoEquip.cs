@@ -23,37 +23,45 @@ namespace BoundWeapon
             if (pawn.Downed || pawn.InMentalState)
                 return true;
 
-            if (pawn.jobs?.curJob != null && pawn.jobs.curJob.playerForced) return true;
+            if (pawn.jobs != null && pawn.jobs.curJob != null && pawn.jobs.curJob.playerForced)
+                return true;
 
-            if (pawn.Drafted) return true;
+            if (pawn.Drafted)
+                return true;
 
             if (pawn.equipment == null)
                 return true;
 
-            if (!WorldComp_BoundWeapon.Instance.TryGet(pawn, out var weapon))
+            if (!TryHandleSlot(__instance, pawn, BoundWeaponSlot.Primary))
+                return false;
+
+            if (BoundWeaponRuntimeProvider.SupportsOffHand)
+            {
+                if (!TryHandleSlot(__instance, pawn, BoundWeaponSlot.OffHand))
+                    return false;
+            }
+
+            return true;
+        }
+
+        static bool TryHandleSlot(Pawn_JobTracker tracker, Pawn pawn, BoundWeaponSlot slot)
+        {
+            ThingWithComps weapon;
+            if (!BoundWeaponApi.TryGet(pawn, slot, out weapon))
                 return true;
 
-            if (!BoundWeaponUtil.NeedsEquip(pawn, weapon))
+            if (!BoundWeaponUtil.NeedsEquip(pawn, weapon, slot))
                 return true;
 
-            if (BoundWeaponUtil.TryEquipFromInventory(pawn, weapon))
+            if (BoundWeaponUtil.TryEquipAssignedWeaponFromInventory(pawn, weapon, slot))
                 return true;
 
-            if (!pawn.Spawned)
+            Job job = BoundWeaponUtil.TryMakeAssignedWeaponEquipJob(pawn, weapon, slot);
+            if (job == null)
                 return true;
 
-            if (!weapon.Spawned || weapon.Map != pawn.Map)
-                return true;
-
-            if (!pawn.CanReserveAndReach(weapon, PathEndMode.Touch, Danger.Deadly))
-                return true;
-
-            var job = JobMaker.MakeJob(JobDefOf.Equip, weapon);
-            job.ignoreForbidden = true;
-
-            var thinkTree = pawn.thinker?.MainThinkTree;
-            __instance.StartJob(job, JobCondition.None, null, false, true, thinkTree);
-
+            ThinkTreeDef thinkTree = pawn.thinker != null ? pawn.thinker.MainThinkTree : null;
+            tracker.StartJob(job, JobCondition.None, null, false, true, thinkTree);
             return false;
         }
     }

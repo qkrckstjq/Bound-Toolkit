@@ -15,7 +15,8 @@ namespace BoundWeapon
             for (int i = 0; i < ms.Length; i++)
             {
                 var m = ms[i];
-                if (m.Name != "Kill") continue;
+                if (m.Name != "Kill")
+                    continue;
                 return m;
             }
             return null;
@@ -23,8 +24,10 @@ namespace BoundWeapon
 
         static void Postfix(Pawn __instance)
         {
-            if (__instance == null) return;
-            BoundWeaponApi.Clear(__instance);
+            if (__instance == null)
+                return;
+
+            BoundWeaponApi.ClearAll(__instance);
         }
     }
 }
