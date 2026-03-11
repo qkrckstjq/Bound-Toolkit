@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-//Dual-Wield
 namespace BoundWeapon
 {
     public static class DualWieldReflection
@@ -15,9 +13,14 @@ namespace BoundWeapon
         static bool initialized;
         static bool active;
         static Assembly dualWieldAssembly;
+
         static MethodInfo tryGetOffHandMethod;
         static MethodInfo makeRoomForOffHandMethod;
         static MethodInfo addOffHandEquipmentMethod;
+
+        static MethodInfo canBeOffHandMethod;
+        static MethodInfo isTwoHandMethod;
+
         static JobDef equipOffHandJobDef;
 
         public static bool Active
@@ -34,15 +37,22 @@ namespace BoundWeapon
             initialized = false;
             active = false;
             dualWieldAssembly = null;
+
             tryGetOffHandMethod = null;
             makeRoomForOffHandMethod = null;
             addOffHandEquipmentMethod = null;
+
+            canBeOffHandMethod = null;
+            isTwoHandMethod = null;
+
             equipOffHandJobDef = null;
         }
 
         static void EnsureInitialized()
         {
-            if (initialized) return;
+            if (initialized)
+                return;
+
             initialized = true;
 
             if (!ModsConfig.IsActive(PackageId))
@@ -58,22 +68,25 @@ namespace BoundWeapon
                 dualWieldAssembly,
                 "TryGetOffHandEquipment",
                 typeof(Pawn_EquipmentTracker),
-                byRefSecondArg: true
+                true
             );
 
             makeRoomForOffHandMethod = FindStaticMethod(
                 dualWieldAssembly,
                 "MakeRoomForOffHand",
                 typeof(Pawn_EquipmentTracker),
-                byRefSecondArg: false
+                false
             );
 
             addOffHandEquipmentMethod = FindStaticMethod(
                 dualWieldAssembly,
                 "AddOffHandEquipment",
                 typeof(Pawn_EquipmentTracker),
-                byRefSecondArg: false
+                false
             );
+
+            canBeOffHandMethod = FindThingDefBoolMethod(dualWieldAssembly, "CanBeOffHand");
+            isTwoHandMethod = FindThingDefBoolMethod(dualWieldAssembly, "IsTwoHand");
 
             equipOffHandJobDef = FindEquipOffHandJobDef();
 
@@ -83,29 +96,66 @@ namespace BoundWeapon
         static MethodInfo FindStaticMethod(Assembly asm, string name, Type firstArgType, bool byRefSecondArg)
         {
             var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            Type[] types = asm.GetTypes();
 
-            foreach (var t in asm.GetTypes())
+            for (int i = 0; i < types.Length; i++)
             {
-                var methods = t.GetMethods(flags);
-                for (int i = 0; i < methods.Length; i++)
+                MethodInfo[] methods = types[i].GetMethods(flags);
+                for (int j = 0; j < methods.Length; j++)
                 {
-                    var m = methods[i];
-                    if (m.Name != name) continue;
+                    MethodInfo m = methods[j];
+                    if (m.Name != name)
+                        continue;
 
-                    var p = m.GetParameters();
-                    if (p.Length != 2) continue;
+                    ParameterInfo[] p = m.GetParameters();
+                    if (p.Length != 2)
+                        continue;
+
                     if (!p[0].ParameterType.IsAssignableFrom(firstArgType) &&
                         !firstArgType.IsAssignableFrom(p[0].ParameterType))
                         continue;
 
                     if (byRefSecondArg)
                     {
-                        if (!p[1].ParameterType.IsByRef) continue;
+                        if (!p[1].ParameterType.IsByRef)
+                            continue;
                     }
                     else
                     {
-                        if (!typeof(ThingWithComps).IsAssignableFrom(p[1].ParameterType)) continue;
+                        if (!typeof(ThingWithComps).IsAssignableFrom(p[1].ParameterType))
+                            continue;
                     }
+
+                    return m;
+                }
+            }
+
+            return null;
+        }
+
+        static MethodInfo FindThingDefBoolMethod(Assembly asm, string name)
+        {
+            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            Type[] types = asm.GetTypes();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                MethodInfo[] methods = types[i].GetMethods(flags);
+                for (int j = 0; j < methods.Length; j++)
+                {
+                    MethodInfo m = methods[j];
+                    if (m.Name != name)
+                        continue;
+
+                    ParameterInfo[] p = m.GetParameters();
+                    if (p.Length != 1)
+                        continue;
+
+                    if (p[0].ParameterType != typeof(ThingDef))
+                        continue;
+
+                    if (m.ReturnType != typeof(bool))
+                        continue;
 
                     return m;
                 }
@@ -127,8 +177,9 @@ namespace BoundWeapon
             var defs = DefDatabase<JobDef>.AllDefsListForReading;
             for (int i = 0; i < defs.Count; i++)
             {
-                var def = defs[i];
-                if (def == null || def.defName == null) continue;
+                JobDef def = defs[i];
+                if (def == null || def.defName == null)
+                    continue;
 
                 for (int j = 0; j < candidates.Length; j++)
                 {
@@ -145,13 +196,14 @@ namespace BoundWeapon
             weapon = null;
             EnsureInitialized();
 
-            if (!active || pawn?.equipment == null)
+            if (!active || pawn == null || pawn.equipment == null)
                 return false;
 
-            object[] args = { pawn.equipment, null };
+            object[] args = new object[] { pawn.equipment, null };
             object result = tryGetOffHandMethod.Invoke(null, args);
 
-            if (result is not bool ok || !ok)
+            bool ok = result is bool && (bool)result;
+            if (!ok)
                 return false;
 
             weapon = args[1] as ThingWithComps;
@@ -188,9 +240,31 @@ namespace BoundWeapon
             if (!active || equipOffHandJobDef == null || pawn == null || weapon == null)
                 return null;
 
-            var job = JobMaker.MakeJob(equipOffHandJobDef, weapon);
+            Job job = JobMaker.MakeJob(equipOffHandJobDef, weapon);
             job.ignoreForbidden = true;
             return job;
+        }
+
+        public static bool CanAssignToOffHand(ThingWithComps weapon)
+        {
+            EnsureInitialized();
+
+            if (!active || weapon == null || weapon.def == null || canBeOffHandMethod == null)
+                return false;
+
+            object result = canBeOffHandMethod.Invoke(null, new object[] { weapon.def });
+            return result is bool && (bool)result;
+        }
+
+        public static bool IsTwoHanded(ThingWithComps weapon)
+        {
+            EnsureInitialized();
+
+            if (!active || weapon == null || weapon.def == null || isTwoHandMethod == null)
+                return false;
+
+            object result = isTwoHandMethod.Invoke(null, new object[] { weapon.def });
+            return result is bool && (bool)result;
         }
     }
 }
