@@ -8,31 +8,63 @@ namespace BoundWeapon
 {
     public class WorldComp_BoundWeapon : WorldComponent
     {
-        private Dictionary<Pawn, ThingWithComps> pawnToWeapon = new Dictionary<Pawn, ThingWithComps>();
+        private Dictionary<Pawn, BoundWeaponLoadout> pawnToLoadout = new Dictionary<Pawn, BoundWeaponLoadout>();
         private List<Pawn> pawnKeys;
-        private List<ThingWithComps> weaponValues;
+        private List<BoundWeaponLoadout> loadoutValues;
+
+        private Dictionary<Pawn, ThingWithComps> legacyPawnToWeapon;
+        private List<Pawn> legacyPawnKeys;
+        private List<ThingWithComps> legacyWeaponValues;
 
         public WorldComp_BoundWeapon(World world) : base(world)
         {
         }
 
-        public static WorldComp_BoundWeapon Instance => Find.World.GetComponent<WorldComp_BoundWeapon>();
+        public static WorldComp_BoundWeapon Instance
+        {
+            get { return Find.World.GetComponent<WorldComp_BoundWeapon>(); }
+        }
 
         public override void ExposeData()
         {
-            Scribe_Collections.Look(ref pawnToWeapon, "pawnToWeapon", LookMode.Reference, LookMode.Reference, ref pawnKeys, ref weaponValues);
+            Scribe_Collections.Look(ref pawnToLoadout, "pawnToLoadout", LookMode.Reference, LookMode.Deep, ref pawnKeys, ref loadoutValues);
+            Scribe_Collections.Look(ref legacyPawnToWeapon, "pawnToWeapon", LookMode.Reference, LookMode.Reference, ref legacyPawnKeys, ref legacyWeaponValues);
+
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                MigrateLegacyData();
+                CleanupInvalidEntries();
+            }
         }
 
-        public bool Set(Pawn pawn, ThingWithComps weapon)
+        public bool TrySet(Pawn pawn, ThingWithComps weapon, BoundWeaponSlot slot)
         {
             if (pawn == null)
                 return false;
 
+            if (!BoundWeaponRuntimeProvider.Current.CanAssignToSlot(pawn, weapon, slot))
+            {
+                Messages.Message(
+                    "BW_InvalidSlotAssignment".Translate(BoundWeaponUtil.SlotLabel(slot), weapon.LabelCap),
+                    MessageTypeDefOf.RejectInput,
+                    false
+                );
+                return false;
+            }
+
+            if (slot == BoundWeaponSlot.OffHand && !BoundWeaponRuntimeProvider.SupportsOffHand)
+            {
+                Messages.Message("Off-hand assignment requires Dual Wield.", MessageTypeDefOf.RejectInput, false);
+                return false;
+            }
+
             if (weapon == null || weapon.Destroyed)
             {
-                pawnToWeapon.Remove(pawn);
+                Clear(pawn, slot);
                 return true;
             }
+
+            CleanupInvalidEntries();
 
             bool hasLinkSignal;
             Pawn linkedPawn;
@@ -58,61 +90,269 @@ namespace BoundWeapon
                 return false;
             }
 
-            foreach (var kv in pawnToWeapon)
+            Pawn ownerPawn;
+            BoundWeaponSlot ownerSlot;
+            if (TryFindOwner(weapon, out ownerPawn, out ownerSlot))
             {
-                Pawn otherPawn = kv.Key;
-                ThingWithComps otherWeapon = kv.Value;
-
-                if (otherPawn == null || otherWeapon == null)
-                    continue;
-
-                if (otherPawn.Dead || otherPawn.DestroyedOrNull())
-                    continue;
-
-                if (otherWeapon.Destroyed)
-                    continue;
-
-                if (!ReferenceEquals(otherPawn, pawn) && ReferenceEquals(otherWeapon, weapon))
+                if (!ReferenceEquals(ownerPawn, pawn))
                 {
                     Messages.Message(
-                        "BW_WeaponAlreadyAssigned".Translate(weapon.LabelCap, otherPawn.LabelShortCap),
+                        "BW_WeaponAlreadyAssigned".Translate(weapon.LabelCap, ownerPawn.LabelShortCap),
                         MessageTypeDefOf.RejectInput,
                         false
                     );
                     return false;
                 }
+
+                if (ownerSlot == slot)
+                    return true;
             }
 
-            pawnToWeapon[pawn] = weapon;
+            BoundWeaponLoadout loadout = GetOrCreateLoadout(pawn);
+
+            BoundWeaponSlot otherSlot = slot == BoundWeaponSlot.Primary
+                ? BoundWeaponSlot.OffHand
+                : BoundWeaponSlot.Primary;
+
+            ThingWithComps other = loadout.Get(otherSlot);
+            if (other != null && ReferenceEquals(other, weapon))
+                loadout.Clear(otherSlot);
+
+            loadout.Set(slot, weapon);
+            CleanupPawnEntryIfEmpty(pawn, loadout);
             return true;
         }
 
-        public void Clear(Pawn pawn)
+        public void Clear(Pawn pawn, BoundWeaponSlot slot)
         {
             if (pawn == null)
                 return;
 
-            pawnToWeapon.Remove(pawn);
+            BoundWeaponLoadout loadout;
+            if (!pawnToLoadout.TryGetValue(pawn, out loadout) || loadout == null)
+                return;
+
+            loadout.Clear(slot);
+            CleanupPawnEntryIfEmpty(pawn, loadout);
         }
 
-        public bool TryGet(Pawn pawn, out ThingWithComps weapon)
+        public void ClearAll(Pawn pawn)
+        {
+            if (pawn == null)
+                return;
+
+            pawnToLoadout.Remove(pawn);
+        }
+
+        public bool TryGet(Pawn pawn, BoundWeaponSlot slot, out ThingWithComps weapon)
         {
             weapon = null;
 
             if (pawn == null)
                 return false;
 
-            if (!pawnToWeapon.TryGetValue(pawn, out weapon))
+            BoundWeaponLoadout loadout;
+            if (!pawnToLoadout.TryGetValue(pawn, out loadout) || loadout == null)
                 return false;
 
-            if (weapon == null || weapon.Destroyed)
+            loadout.CleanupDestroyed();
+            CleanupPawnEntryIfEmpty(pawn, loadout);
+
+            weapon = loadout.Get(slot);
+            return weapon != null && !weapon.Destroyed;
+        }
+
+        public bool TryGetAny(Pawn pawn, out ThingWithComps weapon)
+        {
+            weapon = null;
+
+            ThingWithComps primary;
+            if (TryGet(pawn, BoundWeaponSlot.Primary, out primary))
             {
-                pawnToWeapon.Remove(pawn);
-                weapon = null;
-                return false;
+                weapon = primary;
+                return true;
             }
 
-            return true;
+            ThingWithComps offHand;
+            if (TryGet(pawn, BoundWeaponSlot.OffHand, out offHand))
+            {
+                weapon = offHand;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnyAssigned(Pawn pawn)
+        {
+            ThingWithComps weapon;
+            return TryGetAny(pawn, out weapon);
+        }
+
+        public void ClearByWeapon(ThingWithComps weapon)
+        {
+            if (weapon == null)
+                return;
+
+            List<Pawn> removePawns = null;
+
+            foreach (KeyValuePair<Pawn, BoundWeaponLoadout> kv in pawnToLoadout)
+            {
+                Pawn pawn = kv.Key;
+                BoundWeaponLoadout loadout = kv.Value;
+                if (pawn == null || loadout == null)
+                    continue;
+
+                bool changed = false;
+
+                if (loadout.primary != null && ReferenceEquals(loadout.primary, weapon))
+                {
+                    loadout.primary = null;
+                    changed = true;
+                }
+
+                if (loadout.offHand != null && ReferenceEquals(loadout.offHand, weapon))
+                {
+                    loadout.offHand = null;
+                    changed = true;
+                }
+
+                if (changed && !loadout.HasAny())
+                {
+                    if (removePawns == null)
+                        removePawns = new List<Pawn>();
+
+                    removePawns.Add(pawn);
+                }
+            }
+
+            if (removePawns == null)
+                return;
+
+            for (int i = 0; i < removePawns.Count; i++)
+                pawnToLoadout.Remove(removePawns[i]);
+        }
+
+        BoundWeaponLoadout GetOrCreateLoadout(Pawn pawn)
+        {
+            BoundWeaponLoadout loadout;
+            if (!pawnToLoadout.TryGetValue(pawn, out loadout) || loadout == null)
+            {
+                loadout = new BoundWeaponLoadout();
+                pawnToLoadout[pawn] = loadout;
+            }
+
+            return loadout;
+        }
+
+        void CleanupPawnEntryIfEmpty(Pawn pawn, BoundWeaponLoadout loadout)
+        {
+            if (pawn == null || loadout == null)
+                return;
+
+            loadout.CleanupDestroyed();
+
+            if (!loadout.HasAny())
+                pawnToLoadout.Remove(pawn);
+        }
+
+        void CleanupInvalidEntries()
+        {
+            List<Pawn> removePawns = null;
+
+            foreach (KeyValuePair<Pawn, BoundWeaponLoadout> kv in pawnToLoadout)
+            {
+                Pawn pawn = kv.Key;
+                BoundWeaponLoadout loadout = kv.Value;
+
+                if (pawn == null || pawn.Dead || pawn.DestroyedOrNull() || loadout == null)
+                {
+                    if (removePawns == null)
+                        removePawns = new List<Pawn>();
+
+                    removePawns.Add(pawn);
+                    continue;
+                }
+
+                loadout.CleanupDestroyed();
+
+                if (!loadout.HasAny())
+                {
+                    if (removePawns == null)
+                        removePawns = new List<Pawn>();
+
+                    removePawns.Add(pawn);
+                }
+            }
+
+            if (removePawns == null)
+                return;
+
+            for (int i = 0; i < removePawns.Count; i++)
+                pawnToLoadout.Remove(removePawns[i]);
+        }
+
+        void MigrateLegacyData()
+        {
+            if (legacyPawnToWeapon == null || legacyPawnToWeapon.Count == 0)
+                return;
+
+            foreach (KeyValuePair<Pawn, ThingWithComps> kv in legacyPawnToWeapon)
+            {
+                Pawn pawn = kv.Key;
+                ThingWithComps weapon = kv.Value;
+
+                if (pawn == null || pawn.Dead || pawn.DestroyedOrNull())
+                    continue;
+
+                if (weapon == null || weapon.Destroyed)
+                    continue;
+
+                BoundWeaponLoadout loadout;
+                if (!pawnToLoadout.TryGetValue(pawn, out loadout) || loadout == null)
+                {
+                    loadout = new BoundWeaponLoadout();
+                    pawnToLoadout[pawn] = loadout;
+                }
+
+                if (loadout.primary == null)
+                    loadout.primary = weapon;
+            }
+
+            legacyPawnToWeapon = null;
+            legacyPawnKeys = null;
+            legacyWeaponValues = null;
+        }
+
+        bool TryFindOwner(ThingWithComps weapon, out Pawn ownerPawn, out BoundWeaponSlot ownerSlot)
+        {
+            ownerPawn = null;
+            ownerSlot = BoundWeaponSlot.Primary;
+
+            foreach (KeyValuePair<Pawn, BoundWeaponLoadout> kv in pawnToLoadout)
+            {
+                Pawn pawn = kv.Key;
+                BoundWeaponLoadout loadout = kv.Value;
+
+                if (pawn == null || pawn.Dead || pawn.DestroyedOrNull() || loadout == null)
+                    continue;
+
+                if (loadout.primary != null && !loadout.primary.Destroyed && ReferenceEquals(loadout.primary, weapon))
+                {
+                    ownerPawn = pawn;
+                    ownerSlot = BoundWeaponSlot.Primary;
+                    return true;
+                }
+
+                if (loadout.offHand != null && !loadout.offHand.Destroyed && ReferenceEquals(loadout.offHand, weapon))
+                {
+                    ownerPawn = pawn;
+                    ownerSlot = BoundWeaponSlot.OffHand;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static void GetLinkInfo(ThingWithComps weapon, out bool hasLinkSignal, out Pawn linkedPawn)
