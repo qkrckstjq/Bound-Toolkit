@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+  <BW_SlotPrimary>기본 무기</BW_SlotPrimary>
+  <BW_SlotOffHand>보조무기</BW_SlotOffHand>
+
+  <BW_AssignSlotWeapon>{0} 지정: {1}</BW_AssignSlotWeapon>
+  <BW_AssignmentSet>{0}의 {1} 무기로 {2}을(를) 지정했습니다.</BW_AssignmentSet>
+  <BW_AssignmentCleared>{0}의 {1} 지정을 해제했습니다.</BW_AssignmentCleared>
+
+  <BW_ManagerWindowTitle>무기 관리</BW_ManagerWindowTitle>
+  <BW_NoMap>현재 맵 정보를 찾을 수 없습니다.</BW_NoMap>
+  <BW_NoStoredWeapons>저장 구역에 있는 무기가 없습니다.</BW_NoStoredWeapons>
+  <BW_WeaponListEntry>{0} (내구도: {1}/{2})</BW_WeaponListEntry>
+
+  <BW_None>없음</BW_None>
+  <BW_Set>지정</BW_Set>
+  <BW_Clear>해제</BW_Clear>
+
   <BW_BindWeapon>지정 무기로 설정: {0}</BW_BindWeapon>
   <BW_BindWeaponDesc>지정 무기 설정: {0} → {1}</BW_BindWeaponDesc>
   <BW_ClearWeapon>지정 무기 해제</BW_ClearWeapon>

@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <!-- Existing keys you already use -->
-  <BW_BindWeapon>Set as designated weapon: {0}</BW_BindWeapon>
-  <BW_BindWeaponDesc>Designated weapon set: {0} → {1}</BW_BindWeaponDesc>
+  <BW_SlotPrimary>Primary Weapon</BW_SlotPrimary>
+  <BW_SlotOffHand>Off-hand Weapon</BW_SlotOffHand>
+
+  <BW_AssignSlotWeapon>Assign {0}: {1}</BW_AssignSlotWeapon>
+  <BW_AssignmentSet>Assigned {2} as {0}'s {1}.</BW_AssignmentSet>
+  <BW_AssignmentCleared>Cleared {0}'s {1} assignment.</BW_AssignmentCleared>
+
+  <BW_ManagerWindowTitle>Weapon Management</BW_ManagerWindowTitle>
+  <BW_NoMap>Could not find the current map.</BW_NoMap>
+  <BW_NoStoredWeapons>No weapons found in storage.</BW_NoStoredWeapons>
+  <BW_WeaponListEntry>{0} (Durability: {1}/{2})</BW_WeaponListEntry>
+
+  <BW_None>None</BW_None>
+  <BW_Set>Assign</BW_Set>
+  <BW_Clear>Clear</BW_Clear>
+
+  <BW_BindWeapon>Set designated weapon: {0}</BW_BindWeapon>
+  <BW_BindWeaponDesc>Set designated weapon: {0} → {1}</BW_BindWeaponDesc>
   <BW_ClearWeapon>Clear designated weapon</BW_ClearWeapon>
-  <BW_ClearWeaponDesc>Designated weapon cleared: {0}</BW_ClearWeaponDesc>
+  <BW_ClearWeaponDesc>Clear designated weapon: {0}</BW_ClearWeaponDesc>
   <BW_DesignateCurrent>Designate current weapon</BW_DesignateCurrent>
-  <BW_WeaponManagement>Weapon management</BW_WeaponManagement>
+  <BW_WeaponManagement>Weapon Management</BW_WeaponManagement>
   <BW_DesignatedWeaponSetMsg>{0} designated weapon: {1}</BW_DesignatedWeaponSetMsg>
 
-  <!-- Manager UI keys -->
-  <BW_ManagerWindowTitle>BoundWeapon Weapon Assignment</BW_ManagerWindowTitle>
+  <BW_ManagerWindowTitle>BoundWeapon Weapon Assignment Management</BW_ManagerWindowTitle>
   <BW_NoMap>No map available.</BW_NoMap>
   <BW_None>None</BW_None>
   <BW_BoundLabel>Assigned: {0}</BW_BoundLabel>
-  <BW_BindButton>Assign</BW_BindButton>
-  <BW_ClearButton>Clear</BW_ClearButton>
+  <BW_BindButton>Assign Weapon</BW_BindButton>
+  <BW_ClearButton>Clear Assignment</BW_ClearButton>
   <BW_NoStoredWeapons>No weapons found in storage.</BW_NoStoredWeapons>
-  <BW_DesignatedWeaponClearedMsg>{0} cleared designated weapon</BW_DesignatedWeaponClearedMsg>
+  <BW_DesignatedWeaponClearedMsg>{0} designated weapon cleared</BW_DesignatedWeaponClearedMsg>
   <BW_WeaponListEntry>{0} ({1}/{2})</BW_WeaponListEntry>
-  <BW_WeaponAlreadyAssigned>{0} is already designated to {1}.</BW_WeaponAlreadyAssigned>
-  <BW_WeaponLinkedUnknownOwner>{0} is a bonded/biocoded weapon that cannot be worn.</BW_WeaponLinkedUnknownOwner>
-  <BW_WeaponLinkedToOtherPawn>{0} is already bonded/biocoded to {1}.</BW_WeaponLinkedToOtherPawn>
+  <BW_WeaponAlreadyAssigned>{0} is already assigned to {1}.</BW_WeaponAlreadyAssigned>
+  <BW_WeaponLinkedUnknownOwner>{0} is a persona/biocoded weapon that cannot be equipped.</BW_WeaponLinkedUnknownOwner>
+  <BW_WeaponLinkedToOtherPawn>{0} is already persona-linked/biocoded to {1}.</BW_WeaponLinkedToOtherPawn>
 </LanguageData>
