@@ -11,6 +11,7 @@ namespace BoundWeapon
     {
         public BoundWeaponMod(ModContentPack content) : base(content)
         {
+            BoundWeaponRuntimeProvider.Reset();
             Log.Message("[BW-DIAG] Mod ctor start");
 
             DumpType(typeof(FloatMenuMakerMap), "FloatMenuMakerMap");
