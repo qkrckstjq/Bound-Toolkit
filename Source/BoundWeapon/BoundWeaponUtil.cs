@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace BoundWeapon
 {
@@ -21,14 +22,23 @@ namespace BoundWeapon
             return true;
         }
 
-        public static bool NeedsEquip(Pawn pawn, ThingWithComps weapon)
+        public static bool NeedsEquip(Pawn pawn, ThingWithComps weapon, BoundWeaponSlot slot)
         {
-            if (pawn == null || pawn.equipment == null)
+            if (pawn == null || weapon == null)
                 return false;
-            return pawn.equipment.Primary != weapon;
+
+            return !BoundWeaponRuntimeProvider.Current.IsEquipped(pawn, weapon, slot);
         }
 
-        public static bool TryEquipFromInventory(Pawn pawn, ThingWithComps weapon)
+        public static bool IsPrimaryEquipped(Pawn pawn, ThingWithComps weapon)
+        {
+            if (pawn == null || pawn.equipment == null || weapon == null)
+                return false;
+
+            return ReferenceEquals(pawn.equipment.Primary, weapon);
+        }
+
+        public static bool TryEquipPrimaryFromInventory(Pawn pawn, ThingWithComps weapon)
         {
             if (pawn == null || pawn.inventory == null || pawn.equipment == null)
                 return false;
@@ -44,6 +54,42 @@ namespace BoundWeapon
             pawn.equipment.AddEquipment(weapon);
             pawn.equipment.Notify_EquipmentAdded(weapon);
             return true;
+        }
+
+        public static bool TryEquipAssignedWeaponFromInventory(Pawn pawn, ThingWithComps weapon, BoundWeaponSlot slot)
+        {
+            return BoundWeaponRuntimeProvider.Current.TryEquipFromInventory(pawn, weapon, slot);
+        }
+
+        public static Job TryMakePrimaryEquipJob(Pawn pawn, ThingWithComps weapon)
+        {
+            if (pawn == null || weapon == null)
+                return null;
+
+            if (!pawn.Spawned)
+                return null;
+
+            if (!weapon.Spawned || weapon.Map != pawn.Map)
+                return null;
+
+            if (!pawn.CanReserveAndReach(weapon, PathEndMode.Touch, Danger.Deadly))
+                return null;
+
+            Job job = JobMaker.MakeJob(JobDefOf.Equip, weapon);
+            job.ignoreForbidden = true;
+            return job;
+        }
+
+        public static Job TryMakeAssignedWeaponEquipJob(Pawn pawn, ThingWithComps weapon, BoundWeaponSlot slot)
+        {
+            return BoundWeaponRuntimeProvider.Current.TryCreateEquipJob(pawn, weapon, slot);
+        }
+
+        public static string SlotLabel(BoundWeaponSlot slot)
+        {
+            return slot == BoundWeaponSlot.Primary
+                ? "BW_SlotPrimary".Translate().ToString()
+                : "BW_SlotOffHand".Translate().ToString();
         }
     }
 }
