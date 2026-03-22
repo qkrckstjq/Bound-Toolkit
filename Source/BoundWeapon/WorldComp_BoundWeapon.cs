@@ -20,11 +20,6 @@ namespace BoundWeapon
         {
         }
 
-        public static WorldComp_BoundWeapon Instance
-        {
-            get { return Find.World.GetComponent<WorldComp_BoundWeapon>(); }
-        }
-
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref pawnToLoadout, "pawnToLoadout", LookMode.Reference, LookMode.Deep, ref pawnKeys, ref loadoutValues);
@@ -155,7 +150,7 @@ namespace BoundWeapon
             if (!pawnToLoadout.TryGetValue(pawn, out loadout) || loadout == null)
                 return false;
 
-            loadout.CleanupDestroyed();
+            //loadout.CleanupDestroyed();
             CleanupPawnEntryIfEmpty(pawn, loadout);
 
             weapon = loadout.Get(slot);
@@ -181,12 +176,6 @@ namespace BoundWeapon
             }
 
             return false;
-        }
-
-        public bool AnyAssigned(Pawn pawn)
-        {
-            ThingWithComps weapon;
-            return TryGetAny(pawn, out weapon);
         }
 
         public void ClearByWeapon(ThingWithComps weapon)

@@ -40,11 +40,6 @@ namespace BoundWeapon
             return TryGet(pawn, BoundWeaponSlot.Primary, out weapon);
         }
 
-        public static bool TryGetOffHand(Pawn pawn, out ThingWithComps weapon)
-        {
-            return TryGet(pawn, BoundWeaponSlot.OffHand, out weapon);
-        }
-
         public static bool TryGetAny(Pawn pawn, out ThingWithComps weapon)
         {
             weapon = null;
@@ -117,18 +112,6 @@ namespace BoundWeapon
                 return;
 
             comp.ClearByWeapon(weapon);
-        }
-
-        public static bool AnyAssigned(Pawn pawn)
-        {
-            if (pawn == null)
-                return false;
-
-            var comp = Comp;
-            if (comp == null)
-                return false;
-
-            return comp.AnyAssigned(pawn);
         }
     }
 }
